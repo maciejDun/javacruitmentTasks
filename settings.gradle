@@ -6,3 +6,10 @@ pluginManagement {
 }
 
 rootProject.name = 'javacruitment'
+
+include 'javacruitment-application'
+include 'javacruitment-business-service'
+include 'javacruitment-common'
+include 'javacruitment-dao'
+include 'javacruitment-rest-model'
+include 'javacruitment-rest-service'

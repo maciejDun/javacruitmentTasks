@@ -1,0 +1,1 @@
+create database javacruitment with encoding ='UTF-8' owner = "user";

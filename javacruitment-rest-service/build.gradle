@@ -1,0 +1,9 @@
+dependencies {
+	implementation 'io.swagger.core.v3:swagger-annotations'
+	implementation 'io.swagger.core.v3:swagger-models'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.5.2'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation project(':javacruitment-business-service')
+	implementation project(':javacruitment-common')
+	implementation project(':javacruitment-rest-model')
+}

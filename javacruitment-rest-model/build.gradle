@@ -1,0 +1,5 @@
+dependencies {
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	implementation 'io.swagger.core.v3:swagger-annotations'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+}

@@ -1,0 +1,7 @@
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	runtimeOnly 'org.flywaydb:flyway-core:7.4.0'
+	runtimeOnly project(':javacruitment-rest-service')
+}

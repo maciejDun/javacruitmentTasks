@@ -1,45 +1,72 @@
-plugins {
-	id 'org.springframework.boot' version '2.4.1'
-	id 'java'
-	id 'idea'
-}
+buildscript {
+	ext {
+		springBootVersion = '2.4.1'
+	}
 
-apply plugin: 'io.spring.dependency-management'
+	repositories {
+		mavenCentral()
+	}
 
-group = 'com.interview'
-version = '0.0.1'
-
-
-sourceCompatibility = 15
-targetCompatibility = 15
-compileJava.options.encoding = 'UTF-8'
-
-repositories {
-	mavenLocal()
-	mavenCentral()
-	jcenter()
-}
-
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.projectlombok:lombok'
-	implementation 'org.postgresql:postgresql'
-	implementation 'org.apache.commons:commons-lang3:3.10'
-	annotationProcessor 'org.projectlombok:lombok'
-
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.mockito:mockito-core:3.7.0'
-	testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
-}
-
-configurations {
-	all {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-		exclude group: 'junit', module: 'junit'
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 	}
 }
 
-test {
-	useJUnitPlatform()
+group = 'com.javacruitment'
+version = '1.0.0'
+
+apply plugin: 'idea'
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'io.spring.dependency-management'
+
+	sourceCompatibility = 15
+	targetCompatibility = 15
+
+	compileJava {
+		options.encoding = 'UTF-8'
+		options.compilerArgs << '-parameters'
+	}
+
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		jcenter()
+	}
+
+	dependencyManagement {
+		imports {
+			mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+		}
+		dependencies {
+			dependency 'org.projectlombok:lombok:1.18.16'
+			dependency 'io.swagger.core.v3:swagger-annotations:2.1.6'
+			dependency 'io.swagger.core.v3:swagger-models:2.1.6'
+			dependency 'io.swagger.core.v3:swagger-core:2.1.6'
+		}
+	}
+
+	dependencies {
+		implementation 'org.apache.commons:commons-lang3:3.10'
+		annotationProcessor 'org.projectlombok:lombok'
+		testAnnotationProcessor 'org.projectlombok:lombok'
+		testImplementation 'org.projectlombok:lombok'
+		compileOnly 'org.projectlombok:lombok'
+
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testImplementation 'org.mockito:mockito-core:3.7.0'
+		testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
+	}
+
+	configurations {
+		all {
+			exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+			exclude group: 'junit', module: 'junit'
+		}
+	}
+
+	test {
+		useJUnitPlatform()
+	}
 }
