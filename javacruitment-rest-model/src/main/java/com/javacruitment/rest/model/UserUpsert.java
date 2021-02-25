@@ -1,10 +1,12 @@
 package com.javacruitment.rest.model;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
@@ -19,6 +21,6 @@ public class UserUpsert {
 	private String username;
 
 	@Schema(description = "Email", example = "john@doe.com", required = true)
-	@NotBlank(message = "Email cannot be empty.")
+	@Email(message = "Inappropriate email format")
 	private String email;
 }

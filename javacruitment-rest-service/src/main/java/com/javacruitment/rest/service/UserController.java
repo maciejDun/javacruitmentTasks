@@ -8,6 +8,7 @@ import java.util.UUID;
 import com.javacruitment.common.exceptions.UserNotFoundException;
 import com.javacruitment.core.users.UserService;
 import com.javacruitment.rest.model.User;
+import com.javacruitment.rest.model.UserUpsert;
 import com.javacruitment.rest.service.aop.Problem;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,13 +18,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(UserController.BASE_URL)
@@ -73,5 +70,15 @@ class UserController {
 	})
 	public void checkExists(@PathVariable UUID id) throws UserNotFoundException {
 		userService.checkUserExists(id);
+	}
+
+	@PostMapping("/")
+	@Operation(description = "Creates new user")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", description = "OK"),
+			@ApiResponse(responseCode = "400", description = "Blank field", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	})
+	public UUID addUser(@RequestBody @Valid UserUpsert userUpsert){
+		return userService.createUser(userUpsert);
 	}
 }
