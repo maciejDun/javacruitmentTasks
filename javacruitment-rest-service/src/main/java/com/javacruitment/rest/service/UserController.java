@@ -5,6 +5,7 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 import java.util.List;
 import java.util.UUID;
 
+import com.javacruitment.common.exceptions.UserAlreadyExists;
 import com.javacruitment.common.exceptions.UserNotFoundException;
 import com.javacruitment.core.users.UserService;
 import com.javacruitment.rest.model.User;
@@ -78,7 +79,7 @@ class UserController {
 			@ApiResponse(responseCode = "200", description = "OK"),
 			@ApiResponse(responseCode = "400", description = "Blank field", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	})
-	public UUID addUser(@RequestBody @Valid UserUpsert userUpsert){
+	public UUID addUser(@RequestBody @Valid UserUpsert userUpsert) throws UserAlreadyExists {
 		return userService.createUser(userUpsert);
 	}
 }

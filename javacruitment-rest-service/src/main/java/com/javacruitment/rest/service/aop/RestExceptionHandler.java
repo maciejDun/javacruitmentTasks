@@ -1,5 +1,6 @@
 package com.javacruitment.rest.service.aop;
 
+import com.javacruitment.common.exceptions.UserAlreadyExists;
 import com.javacruitment.common.exceptions.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,11 @@ class RestExceptionHandler {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	ResponseEntity<Problem> handleNotValidArgument(MethodArgumentNotValidException ex) {
+		return handleException(ex, HttpStatus.BAD_REQUEST);
+	}
 
+	@ExceptionHandler(UserAlreadyExists.class)
+	ResponseEntity<Problem> handleNotValidArgument(UserAlreadyExists ex) {
 		return handleException(ex, HttpStatus.BAD_REQUEST);
 	}
 

@@ -4,9 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.javacruitment.common.exceptions.UserAlreadyExists;
 import com.javacruitment.common.exceptions.UserNotFoundException;
 import com.javacruitment.dao.entities.UserEntity;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.jdbc.support.SQLExceptionSubclassTranslator;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -32,9 +36,13 @@ public class UserDao {
 		}
 	}
 
-	public UserEntity create(UserEntity user) {
+	public UserEntity create(UserEntity user) throws UserAlreadyExists{
+		System.out.println(user.getUsername() + " " + user.getEmail());
 		if (user.getId() != null) {
 			throw new IllegalArgumentException("User already exists.");
+		}
+		if (!userRepository.findByUsernameAndEmail(user.getUsername(), user.getEmail()).isEmpty()) {
+			throw new UserAlreadyExists("User already exists");
 		}
 		return userRepository.save(user);
 	}

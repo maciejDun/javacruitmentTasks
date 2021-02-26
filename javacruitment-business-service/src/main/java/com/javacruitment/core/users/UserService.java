@@ -1,5 +1,6 @@
 package com.javacruitment.core.users;
 
+import com.javacruitment.common.exceptions.UserAlreadyExists;
 import com.javacruitment.common.exceptions.UserNotFoundException;
 import com.javacruitment.dao.entities.UserEntity;
 import com.javacruitment.dao.users.UserDao;
@@ -20,7 +21,7 @@ public class UserService {
 	private final UserMapper userMapper = new UserMapper();
 	private final UserDao userDao;
 
-	public UUID createUser(UserUpsert userUpsert) {
+	public UUID createUser(UserUpsert userUpsert) throws UserAlreadyExists {
 		UserEntity userEntity = userDao.create(userMapper.map(userUpsert));
 		return userEntity.getId();
 	}
