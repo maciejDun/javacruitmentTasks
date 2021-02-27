@@ -19,12 +19,13 @@ class RestExceptionHandler {
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	ResponseEntity<Problem> handleNotValidArgument(MethodArgumentNotValidException ex) {
+	ResponseEntity<Problem> handleNotValidArgument() {
+		Exception ex = new RuntimeException("Username and email cannot be blank, email must have proper format");
 		return handleException(ex, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(UserAlreadyExists.class)
-	ResponseEntity<Problem> handleNotValidArgument(UserAlreadyExists ex) {
+	ResponseEntity<Problem> handleUserAlreadyExists(UserAlreadyExists ex) {
 		return handleException(ex, HttpStatus.BAD_REQUEST);
 	}
 

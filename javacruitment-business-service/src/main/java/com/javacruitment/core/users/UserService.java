@@ -45,4 +45,12 @@ public class UserService {
 	public void checkUserExists(UUID id) throws UserNotFoundException {
 		userDao.checkExists(id);
 	}
+
+	public List<User> findUserByGivenText(String text) throws UserNotFoundException{
+		return userDao.findUserByGivenText(text).stream()
+				.map(userMapper::map)
+				.collect(Collectors.toUnmodifiableList());
+	}
+
+
 }

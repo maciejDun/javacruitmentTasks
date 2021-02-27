@@ -77,9 +77,20 @@ class UserController {
 	@Operation(description = "Creates new user")
 	@ApiResponses({
 			@ApiResponse(responseCode = "200", description = "OK"),
-			@ApiResponse(responseCode = "400", description = "Blank field", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+			@ApiResponse(responseCode = "400", description = "Blank field", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(responseCode = "400", description = "User already exists", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	})
 	public UUID addUser(@RequestBody @Valid UserUpsert userUpsert) throws UserAlreadyExists {
 		return userService.createUser(userUpsert);
+	}
+
+	@GetMapping(path = "/find-by", produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(description = "Finds users by given text")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", description = "OK"),
+			@ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
+	})
+	public List<User> findUserByGivenText(@RequestParam String text) throws UserNotFoundException{
+		return userService.findUserByGivenText(text);
 	}
 }

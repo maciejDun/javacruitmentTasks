@@ -8,9 +8,6 @@ import com.javacruitment.common.exceptions.UserAlreadyExists;
 import com.javacruitment.common.exceptions.UserNotFoundException;
 import com.javacruitment.dao.entities.UserEntity;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.jdbc.support.SQLExceptionSubclassTranslator;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -36,6 +33,13 @@ public class UserDao {
 		}
 	}
 
+	public List<UserEntity> findUserByGivenText(String text) throws UserNotFoundException{
+		if (userRepository.findUserByGivenText(text).isEmpty()){
+			throw new UserNotFoundException("User with given text: " + text + ", does not exist");
+		}
+		return userRepository.findUserByGivenText(text);
+	}
+
 	public UserEntity create(UserEntity user) throws UserAlreadyExists{
 		System.out.println(user.getUsername() + " " + user.getEmail());
 		if (user.getId() != null) {
@@ -50,4 +54,5 @@ public class UserDao {
 	public void delete(UserEntity user) {
 		userRepository.delete(user);
 	}
+
 }
