@@ -6,4 +6,7 @@ dependencies {
 	implementation project(':javacruitment-business-service')
 	implementation project(':javacruitment-common')
 	implementation project(':javacruitment-rest-model')
+	dependencies {
+		annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+	}
 }

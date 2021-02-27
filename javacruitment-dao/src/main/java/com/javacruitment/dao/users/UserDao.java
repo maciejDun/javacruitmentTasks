@@ -1,11 +1,13 @@
 package com.javacruitment.dao.users;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.javacruitment.common.exceptions.UserAlreadyExists;
+import com.javacruitment.common.exceptions.UserAlreadyExistsExists;
 import com.javacruitment.common.exceptions.UserNotFoundException;
+import com.javacruitment.common.exceptions.UsernameIsOnBlacklistException;
 import com.javacruitment.dao.entities.UserEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Repository;
 @AllArgsConstructor
 public class UserDao {
 	private final UserRepository userRepository;
+
+	private final List<String> blacklist = List.of("admin", "administrator", "root");
 
 	public List<UserEntity> findAll() {
 		return userRepository.findAll();
@@ -40,15 +44,21 @@ public class UserDao {
 		return userRepository.findUserByGivenText(text);
 	}
 
-	public UserEntity create(UserEntity user) throws UserAlreadyExists{
-		System.out.println(user.getUsername() + " " + user.getEmail());
+	public UserEntity create(UserEntity user) throws UserAlreadyExistsExists, UsernameIsOnBlacklistException {
 		if (user.getId() != null) {
 			throw new IllegalArgumentException("User already exists.");
 		}
+		if (checkIfUsernameNameIsOnBlacklist(user)){
+			throw new UsernameIsOnBlacklistException("This username is restricted");
+		}
 		if (!userRepository.findByUsernameAndEmail(user.getUsername(), user.getEmail()).isEmpty()) {
-			throw new UserAlreadyExists("User already exists");
+			throw new UserAlreadyExistsExists("User already exists");
 		}
 		return userRepository.save(user);
+	}
+
+	public boolean checkIfUsernameNameIsOnBlacklist(UserEntity user){
+		return blacklist.contains(user.getUsername().toLowerCase());
 	}
 
 	public void delete(UserEntity user) {

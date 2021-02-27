@@ -5,8 +5,9 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 import java.util.List;
 import java.util.UUID;
 
-import com.javacruitment.common.exceptions.UserAlreadyExists;
+import com.javacruitment.common.exceptions.UserAlreadyExistsExists;
 import com.javacruitment.common.exceptions.UserNotFoundException;
+import com.javacruitment.common.exceptions.UsernameIsOnBlacklistException;
 import com.javacruitment.core.users.UserService;
 import com.javacruitment.rest.model.User;
 import com.javacruitment.rest.model.UserUpsert;
@@ -80,7 +81,7 @@ class UserController {
 			@ApiResponse(responseCode = "400", description = "Blank field", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class))),
 			@ApiResponse(responseCode = "400", description = "User already exists", content = @Content(mediaType = APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = Problem.class)))
 	})
-	public UUID addUser(@RequestBody @Valid UserUpsert userUpsert) throws UserAlreadyExists {
+	public UUID addUser(@RequestBody @Valid UserUpsert userUpsert) throws UserAlreadyExistsExists, UsernameIsOnBlacklistException {
 		return userService.createUser(userUpsert);
 	}
 

@@ -1,7 +1,8 @@
 package com.javacruitment.rest.service.aop;
 
-import com.javacruitment.common.exceptions.UserAlreadyExists;
+import com.javacruitment.common.exceptions.UserAlreadyExistsExists;
 import com.javacruitment.common.exceptions.UserNotFoundException;
+import com.javacruitment.common.exceptions.UsernameIsOnBlacklistException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,8 +25,13 @@ class RestExceptionHandler {
 		return handleException(ex, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(UserAlreadyExists.class)
-	ResponseEntity<Problem> handleUserAlreadyExists(UserAlreadyExists ex) {
+	@ExceptionHandler(UserAlreadyExistsExists.class)
+	ResponseEntity<Problem> handleUserAlreadyExists(UserAlreadyExistsExists ex) {
+		return handleException(ex, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(UsernameIsOnBlacklistException.class)
+	ResponseEntity<Problem> handleUserAlreadyExists(UsernameIsOnBlacklistException ex) {
 		return handleException(ex, HttpStatus.BAD_REQUEST);
 	}
 
