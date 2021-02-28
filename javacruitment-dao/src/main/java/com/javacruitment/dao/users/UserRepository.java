@@ -12,8 +12,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 interface UserRepository extends JpaRepository<UserEntity, UUID> {
 
-    List<UserEntity> findByUsernameAndEmail(String name, String email);
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 
     @Query("SELECT e FROM UserEntity e WHERE e.username LIKE CONCAT('%',:text,'%')")
     List<UserEntity> findUserByGivenText(@Param("text")String text);
+
 }

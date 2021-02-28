@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://db:5432/javacruitment
+    url: jdbc:postgresql://localhost:5432/javacruitment
     username: user
     password: password
   jpa:
@@ -25,7 +25,4 @@ springdoc:
     path: /api-docs
 
 blacklist:
-  list:
-    - admin
-    - administrator
-    - root
+  list: admin,administrator,root

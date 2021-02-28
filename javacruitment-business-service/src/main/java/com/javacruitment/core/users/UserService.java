@@ -1,6 +1,6 @@
 package com.javacruitment.core.users;
 
-import com.javacruitment.common.exceptions.UserAlreadyExistsExists;
+import com.javacruitment.common.exceptions.UserAlreadyExistsException;
 import com.javacruitment.common.exceptions.UserNotFoundException;
 import com.javacruitment.common.exceptions.UsernameIsOnBlacklistException;
 import com.javacruitment.dao.entities.UserEntity;
@@ -22,7 +22,7 @@ public class UserService {
 	private final UserMapper userMapper = new UserMapper();
 	private final UserDao userDao;
 
-	public UUID createUser(UserUpsert userUpsert) throws UserAlreadyExistsExists, UsernameIsOnBlacklistException {
+	public UUID createUser(UserUpsert userUpsert) throws UserAlreadyExistsException, UsernameIsOnBlacklistException {
 		UserEntity userEntity = userDao.create(userMapper.map(userUpsert));
 		return userEntity.getId();
 	}
@@ -52,6 +52,4 @@ public class UserService {
 				.map(userMapper::map)
 				.collect(Collectors.toUnmodifiableList());
 	}
-
-
 }

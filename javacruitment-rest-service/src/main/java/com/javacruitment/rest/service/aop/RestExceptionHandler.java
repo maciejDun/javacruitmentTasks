@@ -1,6 +1,6 @@
 package com.javacruitment.rest.service.aop;
 
-import com.javacruitment.common.exceptions.UserAlreadyExistsExists;
+import com.javacruitment.common.exceptions.UserAlreadyExistsException;
 import com.javacruitment.common.exceptions.UserNotFoundException;
 import com.javacruitment.common.exceptions.UsernameIsOnBlacklistException;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +22,12 @@ class RestExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	ResponseEntity<Problem> handleNotValidArgument() {
 		Exception ex = new RuntimeException("Username and email cannot be blank, email must have proper format");
+
 		return handleException(ex, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(UserAlreadyExistsExists.class)
-	ResponseEntity<Problem> handleUserAlreadyExists(UserAlreadyExistsExists ex) {
+	@ExceptionHandler(UserAlreadyExistsException.class)
+	ResponseEntity<Problem> handleUserAlreadyExists(UserAlreadyExistsException ex) {
 		return handleException(ex, HttpStatus.BAD_REQUEST);
 	}
 
@@ -39,6 +40,7 @@ class RestExceptionHandler {
 		log.error(exception.getMessage(), exception);
 
 		Problem problem = new Problem(httpStatus.value(), httpStatus.getReasonPhrase(), exception.getMessage());
+
 		return ResponseEntity.status(httpStatus)
 				.contentType(MediaType.APPLICATION_PROBLEM_JSON)
 				.body(problem);
